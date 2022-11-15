@@ -9,7 +9,7 @@ namespace ToDoList.Web.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         private readonly ITodoService _todoService;
-        public List<Todo> Todos { get; set; }
+        public List<Todo> Todos { get; set; } = new List<Todo>();
 
         public IndexModel(ILogger<IndexModel> logger, ITodoService todoService)
         {
