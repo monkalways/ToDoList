@@ -8,7 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["ToDoList.Web.csproj", "ToDoList.Web/"]
-RUN dotnet restore "ToDoList.Web.csproj"
+RUN dotnet restore "ToDoList.Web/ToDoList.Web.csproj"
 COPY . .
 WORKDIR "/src/ToDoList.Web"
 RUN dotnet build "ToDoList.Web.csproj" -c Release -o /app/build
