@@ -8,25 +8,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  versioning:
-    runs-on: ubuntu-latest
-    outputs:
-      build_number: ${{ steps.buildnumber.outputs.build_number }}
-    steps:
-    - name: Generate build number
-      id: buildnumber
-      uses: einaregilsson/build-number@v3 
-      with:
-        token: ${{secrets.github_token}}
-        
   build:
-    needs: versioning
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: monkalways/todo-list
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -56,6 +50,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          push: true
-          tags: monkalways/todo-list:${{needs.versioning.outputs.build_number}}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
         
