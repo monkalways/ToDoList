@@ -14,6 +14,7 @@ namespace ToDoList.Web.Pages
         public string HostName { get; set; }
         public string IpAddress { get; set; }
         public string NodeName { get; set; }
+        public string Version { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, ITodoService todoService)
         {
@@ -21,8 +22,9 @@ namespace ToDoList.Web.Pages
             _todoService = todoService;
 
             HostName = Dns.GetHostName();
-            IpAddress = Dns.GetHostEntry(Dns.GetHostName()).AddressList[3]?.ToString() ?? "N/A";
+            IpAddress = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0]?.ToString() ?? "N/A";
             NodeName = Environment.GetEnvironmentVariable("NODE_NAME") ?? "N/A";
+            Version = Environment.GetEnvironmentVariable("VERSION_NUMBER") ?? "N/A";
         }
 
         public void OnGet()
