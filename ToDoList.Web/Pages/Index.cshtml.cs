@@ -11,13 +11,18 @@ namespace ToDoList.Web.Pages
         private readonly ILogger<IndexModel> _logger;
         private readonly ITodoService _todoService;
         public List<Todo> Todos { get; set; } = new List<Todo>();
-        public string HostName = Dns.GetHostName();
-        public string IpAddress = Dns.GetHostEntry(Dns.GetHostName()).AddressList[0].ToString();
+        public string HostName { get; set; }
+        public string IpAddress { get; set; }
+        public string NodeName { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, ITodoService todoService)
         {
             _logger = logger;
             _todoService = todoService;
+
+            HostName = Dns.GetHostName();
+            IpAddress = Dns.GetHostEntry(Dns.GetHostName()).AddressList[3]?.ToString() ?? "N/A";
+            NodeName = Environment.GetEnvironmentVariable("NODE_NAME") ?? "N/A";
         }
 
         public void OnGet()
